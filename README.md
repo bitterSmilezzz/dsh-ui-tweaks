@@ -46,7 +46,7 @@ node scripts/install-plugins.mjs -p web --only dsh-ui-tweaks
 ```
 
 bundle 自带 `cordis.patch.yml`，安装后自动插入 entry（id: `dsh-ui-tweaks`）。
-依赖 `dsh-core`（`github:bitterSmilezzz/dsh-core`）与官方 `@deepseek-ai/*` rc.7 包。
+依赖官方 `@deepseek-ai/*` rc.7 包（2026-08-19 起不再依赖 dsh-core，共享函数已内联）。
 
 ## License
 
