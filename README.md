@@ -28,7 +28,8 @@
 ## 设计
 
 - 单 bundle 工具数 = 0（纯 client + 1 个 webServer 路由），不注册 LLM 工具，不增加模型 context 开销
-- 浏览器半区 = `lib/client.js`（UI 增强）+ `lib/essentials-client.js`（原 essentials 四个 client factory），
+- 浏览器半区 = `lib/client.js`（单一自包含 bundle：UI 增强 + 原 essentials 四个 client factory 已内联，
+  宿主以 classic script 加载，不允许顶层 import/export，故必须保持单文件），
   同一 `__ModuleLoader__.load` 组合 apply，共享同一 fiber
 - 宿主半区 = 基础输入子模块（`lib/{at-file,model-selector,paste-input}/`）+ retry-settings 路由
 - 统一 locale 命名空间（`ui-tweaks`）+ 统一配置对象
