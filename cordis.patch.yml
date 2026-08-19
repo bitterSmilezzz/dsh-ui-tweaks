@@ -1,9 +1,12 @@
 # dsh-ui-tweaks — 界面增强 + 桌面通知 + 基础输入（合并后的单一 bundle）
 #
-# 2026-08-19 并入原 dsh-essentials 的剩余能力：
+# 2026-08-19 并入原 dsh-essentials 的剩余能力（架构级合并后）：
 # - model-selector / paste-input / at-file（基础输入能力，lib/ 子模块）
 # - 官方工具结果剪枝（ToolResultPruner，无损省 token，见下方配置）
 # 原 essentials 的路由预设（Router Standard/Spec）与梁神模式已删除。
+# 架构：host 半区 = lib/index.js 组合器（挂载领域模块 + ToolResultPruner + retry 路由，
+# 配置逐模块透传 atFile/pasteInput/toolResultPruner）；client 半区 = lib/client.js
+# 单一自包含 bundle（4 个 client factory 内联，独立 client.js 子文件已删，唯一事实来源）。
 #
 # 既有功能：
 # - plugin-inventory：插件列表增强（分类 tab）

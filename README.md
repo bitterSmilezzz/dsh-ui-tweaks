@@ -25,21 +25,26 @@
 所有功能的开关与选项统一放在 **「设置 → 通用设置 → 界面增强」** 总入口下，内部分组展示。
 配置统一存于浏览器 localStorage 单 key（`dsh-ui-tweaks.settings`）。
 
-## 设计
+## 设计（2026-08-19 架构级合并后）
 
 - 单 bundle 工具数 = 0（纯 client + 1 个 webServer 路由），不注册 LLM 工具，不增加模型 context 开销
-- 浏览器半区 = `lib/client.js`（单一自包含 bundle：UI 增强 + 原 essentials 四个 client factory 已内联，
-  宿主以 classic script 加载，不允许顶层 import/export，故必须保持单文件），
-  同一 `__ModuleLoader__.load` 组合 apply，共享同一 fiber
-- 宿主半区 = 基础输入子模块（`lib/{at-file,model-selector,paste-input}/`）+ retry-settings 路由
+- **浏览器半区 = `lib/client.js`（单一自包含 bundle，唯一事实来源）**：UI 增强 + 原 essentials
+  四个 client factory（model-selector/paste-input/at-file/attachment-remove）已内联，
+  宿主以 classic script 加载，不允许顶层 import/export，故必须保持单文件；
+  同一 `__ModuleLoader__.load` 组合 apply，共享同一 fiber。
+  独立的 `lib/{at-file,paste-input,model-selector}/client.js` 子文件已删除（消除双份维护）。
+- **宿主半区 = `lib/index.js`（组合器）**：统一挂载领域模块
+  （`lib/{at-file,model-selector,paste-input}/index.js`）+ 官方 ToolResultPruner
+  + retry-settings 路由；配置逐模块透传（`atFile` / `pasteInput` / `toolResultPruner`），
+  inject 为各模块并集（fs/webServer/loader/sessions/settings/typert）
 - 统一 locale 命名空间（`ui-tweaks`）+ 统一配置对象
 - 所有副作用挂在同一 fiber，插件卸载全部回收
 
 ## 安装
 
 ```bash
-# 推荐：场景化安装
-bash scripts/install.sh --scenario essentials
+# 推荐：按清单直装（meta-repo install.sh）
+bash dsh-plugins/scripts/install.sh --only dsh-ui-tweaks
 
 # 或低层直接装
 node scripts/install-plugins.mjs -p web --only dsh-ui-tweaks
