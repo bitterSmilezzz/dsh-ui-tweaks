@@ -1,6 +1,11 @@
-# dsh-ui-tweaks — 界面增强 + 桌面通知（合并重构后的单一 bundle）
+# dsh-ui-tweaks — 界面增强 + 桌面通知 + 基础输入（合并后的单一 bundle）
 #
-# 从 dsh-notify + dsh-ui-tweaks 合并而来。功能：
+# 2026-08-19 并入原 dsh-essentials 的剩余能力：
+# - model-selector / paste-input / at-file（基础输入能力，lib/ 子模块）
+# - 官方工具结果剪枝（ToolResultPruner，无损省 token，见下方配置）
+# 原 essentials 的路由预设（Router Standard/Spec）与梁神模式已删除。
+#
+# 既有功能：
 # - plugin-inventory：插件列表增强（分类 tab）
 # - auto-hide-composer：输入框自动隐藏
 # - retry-settings：请求重试次数设置（注册 /api/retry-settings 路由）
@@ -11,6 +16,9 @@
 # 设置入口统一放在「通用设置」下的「界面增强」总入口（settings.general.item）。
 # 全部开关/选项读写统一 localStorage 配置对象（dsh-ui-tweaks.settings）。
 #
+# host inject 为各子模块并集（fs/webServer/loader/sessions/settings/typert），
+# 保证 apply 时硬依赖全部就绪。注意：inject 项是 Cordis 服务名（非 entry id）。
+#
 # Install:   dsh plugin --profile <profile> add <path-or-github>
 
 # 禁用官方「插件列表」UI（id: ui-settings-plugin-inventory），
@@ -18,9 +26,44 @@
 - id: ui-settings-plugin-inventory
   disabled: true
 
+# ── 无损省 token（内置，原 essentials）────────────────────────────────
+# 目标：在不丢失信息的前提下减少常驻上下文。完整内容仍可通过 spill 文件
+# 或分页读取按需取回，因此对生成质量/效果无影响。
+#
+# 1) shell 输出内联只保留尾部，完整输出 spill 到临时文件；
+# 2) read 默认窗口变小，需要更多内容时用 offset/limit 分页；
+# 3) 通用纯文本工具结果超过内联上限时，自动替换为 head/tail 预览 +
+#    spill 文件路径。
+#
+# 用户可在 profile 的 cordis.patch.yml 按行 id 覆盖这些值（最后写入者生效）。
+
+- id: pwsh-sandbox
+  config:
+    maxOutputBytes: 16384
+    maxSpillBytes: 1048576
+
+- id: bash-sandbox
+  config:
+    maxOutputBytes: 16384
+    maxSpillBytes: 1048576
+
+- id: tool-fs
+  config:
+    readLimit: 500
+    readMaxBytes: 16384
+    readMaxLineLength: 2000
+
+- id: spill-policy
+  config:
+    maxInlineBytes: 16384
+
 - insert:
     - id: dsh-ui-tweaks
       name: dsh-ui-tweaks
       inject:
+        - fs
         - webServer
+        - loader
+        - sessions
         - settings
+        - typert
