@@ -9,7 +9,6 @@
 |---|---|
 | model-selector | 模型选择器（搜索 + 分组，增强版） |
 | paste-input | 粘贴/拖拽上传（批量/暂存/清理） |
-| at-file | @文件引用（`lib/at-file/`，settings/typert 依赖） |
 | 无损省 token | 官方 ToolResultPruner + shell/read 溢出 spill（见 `cordis.patch.yml`） |
 | plugin-inventory | 插件列表增强（全部/内置/自定义分类 tab + 搜索） |
 | auto-hide-composer | 输入框自动隐藏（贴近恢复，延迟/阈值可调） |
@@ -19,6 +18,7 @@
 | notify | 桌面通知（审批/提问/轮次/后台会话完成，四类事件可分别开关） |
 
 > 原 `dsh-essentials` 的路由预设（Router Standard/Spec）与梁神模式已按用户要求删除（2026-08-19）。
+> `at-file`（@文件引用）已于 **2026-08-20 移除**：官方 rc.8 的 `@` 菜单已支持文件/会话引用，功能重复。
 
 ## 设置
 
@@ -29,14 +29,14 @@
 
 - 单 bundle 工具数 = 0（纯 client + 1 个 webServer 路由），不注册 LLM 工具，不增加模型 context 开销
 - **浏览器半区 = `lib/client.js`（单一自包含 bundle，唯一事实来源）**：UI 增强 + 原 essentials
-  四个 client factory（model-selector/paste-input/at-file/attachment-remove）已内联，
+  三个 client factory（model-selector/paste-input/attachment-remove）已内联，
   宿主以 classic script 加载，不允许顶层 import/export，故必须保持单文件；
   同一 `__ModuleLoader__.load` 组合 apply，共享同一 fiber。
-  独立的 `lib/{at-file,paste-input,model-selector}/client.js` 子文件已删除（消除双份维护）。
+  独立的 `lib/{paste-input,model-selector}/client.js` 子文件已删除（消除双份维护）。
 - **宿主半区 = `lib/index.js`（组合器）**：统一挂载领域模块
-  （`lib/{at-file,model-selector,paste-input}/index.js`）+ 官方 ToolResultPruner
-  + retry-settings 路由；配置逐模块透传（`atFile` / `pasteInput` / `toolResultPruner`），
-  inject 为各模块并集（fs/webServer/loader/sessions/settings/typert）
+  （`lib/{model-selector,paste-input}/index.js`）+ 官方 ToolResultPruner
+  + retry-settings 路由；配置逐模块透传（`pasteInput` / `toolResultPruner`），
+  inject 为各模块并集（fs/webServer/loader/sessions/settings）
 - 统一 locale 命名空间（`ui-tweaks`）+ 统一配置对象
 - 所有副作用挂在同一 fiber，插件卸载全部回收
 
