@@ -11,14 +11,13 @@
 | paste-input | 粘贴/拖拽上传（批量/暂存/清理） |
 | 无损省 token | 官方 ToolResultPruner + shell/read 溢出 spill（见 `cordis.patch.yml`） |
 | plugin-inventory | 插件列表增强（全部/内置/自定义分类 tab + 搜索） |
-| auto-hide-composer | 输入框自动隐藏（贴近恢复，延迟/阈值可调） |
 | retry-settings | 请求重试次数设置（host `/api/retry-settings` 路由） |
-| immersive-mode | 沉浸模式（隐藏侧栏/详情/会话头，右下角悬浮按钮） |
-| keyboard-shortcuts | 全局快捷键（帮助/沉浸/自动隐藏/聚焦/导航） |
-| notify | 桌面通知（审批/提问/轮次/后台会话完成，四类事件可分别开关） |
+| keyboard-shortcuts | 全局快捷键（帮助/聚焦/导航/侧边栏等） |
+| notify | 桌面通知（审批/提问/轮次/后台会话完成，四类事件可分别开关，可配通知声音开关 + 试听） |
 
 > 原 `dsh-essentials` 的路由预设（Router Standard/Spec）与梁神模式已按用户要求删除（2026-08-19）。
 > `at-file`（@文件引用）已于 **2026-08-20 移除**：官方 rc.8 的 `@` 菜单已支持文件/会话引用，功能重复。
+> `auto-hide-composer`（输入框自动隐藏）与 `immersive-mode`（沉浸模式）已于 **2026-08-20 移除**（精简）。
 
 ## 设置
 
