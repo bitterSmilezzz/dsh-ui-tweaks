@@ -1,7 +1,7 @@
 {
   "name": "dsh-ui-tweaks",
   "version": "0.2.0",
-  "description": "基础输入 + 界面增强 + 桌面通知：模型选择、粘贴/拖拽、无损省 token、插件列表增强、请求重试设置、全局快捷键、系统通知。由 dsh-ui-tweaks + dsh-essentials（去预设）合并的单一 bundle；at-file 已于 2026-08-20 移除（官方 rc.8 @ 菜单覆盖），auto-hide 与沉浸模式已于 2026-08-20 移除（精简）。",
+  "description": "基础输入 + 界面增强 + 桌面通知：模型选择、粘贴/拖拽、插件列表增强、请求重试设置、全局快捷键、系统通知。由 dsh-ui-tweaks + dsh-essentials（去预设）合并的单一 bundle；at-file 已于 2026-08-20 移除（官方 rc.8 @ 菜单覆盖），auto-hide 与沉浸模式已于 2026-08-20 移除（精简）。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -63,7 +63,6 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-compaction-tool-result-pruner": "^0.1.0-rc.7",
     "@deepseek-ai/dsh-agent": "^0.1.0-rc.7",
     "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.7",
     "@deepseek-ai/dsh-api-remotes": "^0.1.0-rc.7",

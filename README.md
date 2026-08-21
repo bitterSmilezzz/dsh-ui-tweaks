@@ -9,7 +9,6 @@
 |---|---|
 | model-selector | 模型选择器（搜索 + 分组，增强版） |
 | paste-input | 粘贴/拖拽上传（批量/暂存/清理） |
-| 无损省 token | 官方 ToolResultPruner + shell/read 溢出 spill（见 `cordis.patch.yml`） |
 | plugin-inventory | 插件列表增强（全部/内置/自定义分类 tab + 搜索） |
 | retry-settings | 请求重试次数设置（host `/api/retry-settings` 路由） |
 | keyboard-shortcuts | 全局快捷键（帮助/聚焦/导航/侧边栏等） |
@@ -17,6 +16,7 @@
 
 > 原 `dsh-essentials` 的路由预设（Router Standard/Spec）与梁神模式已按用户要求删除（2026-08-19）。
 > `at-file`（@文件引用）已于 **2026-08-20 移除**：官方 rc.8 的 `@` 菜单已支持文件/会话引用，功能重复。
+> 无损省 token（官方行调优 + ToolResultPruner 组合）已于 **2026-08-21 移除**：本就是官方能力预设，紧凑默认值改由 profile 的 `cordis.patch.yml` 直接配置。
 > `auto-hide-composer`（输入框自动隐藏）与 `immersive-mode`（沉浸模式）已于 **2026-08-20 移除**（精简）。
 
 ## 设置
@@ -34,7 +34,7 @@
   独立的 `lib/{paste-input,model-selector}/client.js` 子文件已删除（消除双份维护）。
 - **宿主半区 = `lib/index.js`（组合器）**：统一挂载领域模块
   （`lib/{model-selector,paste-input}/index.js`）+ 官方 ToolResultPruner
-  + retry-settings 路由；配置逐模块透传（`pasteInput` / `toolResultPruner`），
+  + retry-settings 路由；配置逐模块透传（`pasteInput`），
   inject 为各模块并集（fs/webServer/loader/sessions/settings）
 - 统一 locale 命名空间（`ui-tweaks`）+ 统一配置对象
 - 所有副作用挂在同一 fiber，插件卸载全部回收
@@ -55,3 +55,4 @@ bundle 自带 `cordis.patch.yml`，安装后自动插入 entry（id: `dsh-ui-twe
 ## License
 
 MIT
+

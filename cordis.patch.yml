@@ -2,12 +2,12 @@
 #
 # 2026-08-19 并入原 dsh-essentials 的剩余能力（架构级合并后）：
 # - model-selector / paste-input（基础输入能力，lib/ 子模块）
-# - 官方工具结果剪枝（ToolResultPruner，无损省 token，见下方配置）
 # 原 essentials 的路由预设（Router Standard/Spec）与梁神模式已删除。
 # at-file（@文件引用）已于 2026-08-20 移除：官方 rc.8 @ 菜单支持文件/会话引用，功能重复。
 # auto-hide（输入框自动隐藏）与 immersive（沉浸模式）已于 2026-08-20 移除（精简）。
-# 架构：host 半区 = lib/index.js 组合器（挂载领域模块 + ToolResultPruner + retry 路由，
-# 配置逐模块透传 pasteInput/toolResultPruner）；client 半区 = lib/client.js
+# 省 token（官方行调优 + ToolResultPruner 组合）已于 2026-08-21 移除：本就是官方能力预设，预设改由 profile 的 cordis.patch.yml 直接配置。
+# 架构：host 半区 = lib/index.js 组合器（挂载领域模块 + retry 路由，
+# 配置逐模块透传 pasteInput）；client 半区 = lib/client.js
 # 单一自包含 bundle（3 个 client factory 内联，独立 client.js 子文件已删，唯一事实来源）。
 #
 # 既有功能：
@@ -29,37 +29,6 @@
 - id: ui-settings-plugin-inventory
   disabled: true
 
-# ── 无损省 token（内置，原 essentials）────────────────────────────────
-# 目标：在不丢失信息的前提下减少常驻上下文。完整内容仍可通过 spill 文件
-# 或分页读取按需取回，因此对生成质量/效果无影响。
-#
-# 1) shell 输出内联只保留尾部，完整输出 spill 到临时文件；
-# 2) read 默认窗口变小，需要更多内容时用 offset/limit 分页；
-# 3) 通用纯文本工具结果超过内联上限时，自动替换为 head/tail 预览 +
-#    spill 文件路径。
-#
-# 用户可在 profile 的 cordis.patch.yml 按行 id 覆盖这些值（最后写入者生效）。
-
-- id: pwsh-sandbox
-  config:
-    maxOutputBytes: 16384
-    maxSpillBytes: 1048576
-
-- id: bash-sandbox
-  config:
-    maxOutputBytes: 16384
-    maxSpillBytes: 1048576
-
-- id: tool-fs
-  config:
-    readLimit: 500
-    readMaxBytes: 16384
-    readMaxLineLength: 2000
-
-- id: spill-policy
-  config:
-    maxInlineBytes: 16384
-
 - insert:
     - id: dsh-ui-tweaks
       name: dsh-ui-tweaks
@@ -69,3 +38,4 @@
         - loader
         - sessions
         - settings
+
